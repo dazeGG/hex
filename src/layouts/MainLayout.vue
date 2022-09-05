@@ -1,6 +1,8 @@
 <template>
   <AppHeader/>
-  <router-view class="container"/>
+  <div class="container">
+    <router-view/>
+  </div>
 </template>
 
 <script setup lang="ts">
