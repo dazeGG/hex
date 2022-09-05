@@ -1,17 +1,8 @@
 <template>
-  <div class="layout">
-    <AppHeader/>
-    <router-view/>
-  </div>
+  <AppHeader/>
+  <router-view class="container"/>
 </template>
 
 <script setup lang="ts">
-import AppHeader from '@/components/AppHeader.vue'
+import AppHeader from '@/components/AppHeader/AppHeader.vue'
 </script>
-
-<style scoped lang="scss">
-.layout {
-  display: grid;
-  grid-template-rows: auto 1fr;
-}
-</style>
