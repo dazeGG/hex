@@ -8,14 +8,14 @@
 </template>
 
 <script setup lang="ts">
-import AppHeaderAuth from '@/components/AppHeader/components/AppHeaderAuth.vue'
-import AppHeaderNotAuth from '@/components/AppHeader/components/AppHeaderNotAuth.vue'
-// import { useStore } from 'vuex'
-import { ref } from 'vue'
+import AppHeaderAuth from './components/AppHeaderAuth.vue'
+import AppHeaderNotAuth from './components/AppHeaderNotAuth.vue'
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 
-// const store = useStore()
+const store = useStore()
 
-const auth = ref(false)
+const auth = computed(() => store.getters['Auth/isAuth'])
 </script>
 
 <style lang="scss">
@@ -24,6 +24,7 @@ const auth = ref(false)
 .header {
   position: fixed;
   width: 100%;
+  backdrop-filter: blur(3px);
 
   &__wrapper {
     display: flex;
