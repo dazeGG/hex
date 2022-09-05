@@ -7,18 +7,39 @@
         <span>made by dazeGG</span>
       </div>
       <div class="authorization__form">
-        <RegistrationForm v-if="props.mode === Mode.Registration"/>
-        <AuthorizationForm v-else/>
+        <div class="form">
+          <h1 class="form__title">{{ formText }} Form</h1>
+          <div class="form__item">
+            <label :for="usernameID" class="label">Username</label>
+            <input :id="usernameID" type="text" class="input" placeholder="Enter your username" v-model="username">
+          </div>
+          <div class="form__item">
+            <label :for="passwordID" class="label">Password</label>
+            <input :id="passwordID" type="password" class="input" placeholder="Enter your password" v-model="password">
+          </div>
+          <button type="submit" class="form__item form__submit button" @click="submit">{{ formText }}</button>
+          <div class="form__register" v-if="props.mode === Mode.Registration">
+            <router-link :to="Routes.authorization">
+              <span>Already have an account</span>
+            </router-link>
+          </div>
+          <div class="form__register" v-else>
+            <router-link :to="Routes.registration">
+              <span>Create an account</span>
+            </router-link>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import AuthorizationForm from './components/AuthorizationForm.vue'
-import RegistrationForm from './components/RegistrationForm.vue'
-import { defineProps } from 'vue'
+import { defineProps, ref } from 'vue'
 import Mode from './Mode'
+import { uid } from 'uid'
+import { useRouter } from 'vue-router'
+import Routes from '@/router/Routes'
 
 const props = defineProps({
   mode: {
@@ -26,6 +47,21 @@ const props = defineProps({
     default: Number as () => Mode.Authorization
   }
 })
+
+const formText = props.mode === Mode.Registration ? 'Sign Up' : 'Login'
+
+const router = useRouter()
+
+const usernameID = uid()
+const passwordID = uid()
+
+const username = ref('')
+const password = ref('')
+
+const submit = () => {
+  console.log('submit')
+  router.push('/')
+}
 </script>
 
 <style scoped lang="scss">
@@ -62,6 +98,31 @@ const props = defineProps({
   &__form {
     display: flex;
     justify-content: center;
+  }
+}
+
+.form {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+
+  &__title {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  &__item:not(:first-child) {
+    margin-top: 20px;
+  }
+
+  &__submit {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  &__register {
+    text-align: center;
+    margin-top: 10px;
   }
 }
 </style>
