@@ -1,0 +1,16 @@
+@import '@/assets/colors';
+@import '@/assets/default';
+
+#app {
+  font-family: 'Montserrat', Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: $grey-bg;
+  color: $black;
+}
+
+.container {
+  max-width: 1440px;
+  padding: 0 40px;
+  margin: 0 auto;
+}
