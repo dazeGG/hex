@@ -27,6 +27,11 @@
   border-radius: 10px;
   background: $blue;
   box-shadow: 0 10px 20px rgba($blue, 0.2);
+
+  &.red {
+    background: $red;
+    box-shadow: 0 10px 20px rgba($red, 0.2);
+  }
 }
 
 .label {
