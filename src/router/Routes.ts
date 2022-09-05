@@ -1,5 +1,6 @@
 enum Routes {
-  home = '/links',
+  home = '/',
+  links = '/links',
   registration = '/register',
   authorization = '/authorize'
 }
