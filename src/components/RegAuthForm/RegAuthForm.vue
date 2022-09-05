@@ -36,10 +36,12 @@
 
 <script setup lang="ts">
 import { defineProps, ref } from 'vue'
+import Routes from '@/router/Routes'
 import Mode from './Mode'
 import { uid } from 'uid'
-import { useRouter } from 'vue-router'
-import Routes from '@/router/Routes'
+import { useStore } from 'vuex'
+
+const store = useStore()
 
 const props = defineProps({
   mode: {
@@ -50,17 +52,20 @@ const props = defineProps({
 
 const formText = props.mode === Mode.Registration ? 'Sign Up' : 'Login'
 
-const router = useRouter()
-
 const usernameID = uid()
 const passwordID = uid()
 
 const username = ref('')
 const password = ref('')
 
-const submit = () => {
-  console.log('submit')
-  router.push('/')
+const submit = async () => {
+  switch (props.mode) {
+    case Mode.Registration:
+      await store.dispatch('Auth/register', { username: username.value, password: password.value })
+      break
+    case Mode.Authorization:
+      await store.dispatch('Auth/login', { username: username.value, password: password.value })
+  }
 }
 </script>
 
