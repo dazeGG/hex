@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import Routes from '@/router/Routes'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -6,19 +7,19 @@ const routes: Array<RouteRecordRaw> = [
     redirect: '/links'
   },
   {
-    path: '/links',
+    path: Routes.home,
     name: 'home',
     component: () => import('../views/HomeView.vue')
   },
-  // {
-  //   path: '/register',
-  //   name: 'registration',
-  //   component: () => import('../views/AuthorizationView/RegistrationView.vue')
-  // },
   {
-    path: '/auth',
+    path: Routes.registration,
+    name: 'registration',
+    component: () => import('../views/RegistrationView.vue')
+  },
+  {
+    path: Routes.authorization,
     name: 'authorization',
-    component: () => import('../views/AuthorizationView/AuthorizationView.vue')
+    component: () => import('../views/AuthorizationView.vue')
   }
 ]
 
