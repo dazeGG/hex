@@ -1,0 +1,56 @@
+@import '@/assets/colors';
+@import '@/assets/default';
+
+#app {
+  font-family: 'Montserrat', Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: $grey-bg;
+  color: $black;
+}
+
+.container {
+  max-width: 1440px;
+  padding: 0 40px;
+  margin: 0 auto;
+}
+
+.button {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: $white;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 18px;
+  border-radius: 10px;
+  background: $blue;
+  box-shadow: 0 10px 20px rgba($blue, 0.2);
+}
+
+.label {
+  margin-left: 15px;
+  margin-bottom: 5px;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 18px;
+  color: $grey;
+  display: block;
+  width: fit-content;
+}
+
+.input {
+  background: #FAFAFA;
+  border: 1px solid #D2D2D2;
+  border-radius: 10px;
+  padding: 11px 14px;
+  width: 100%;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 18px;
+
+  &:focus {
+    outline: 1px solid $blue;
+  }
+}
