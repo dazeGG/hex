@@ -2,8 +2,10 @@
   <div class="add-link">
     <div class="add-link__overflow" @click="emit('close')"></div>
     <div class="add-link__wrapper">
-      <input type="text" class="add-link__input" placeholder="Input or paste link..." v-model="link">
-      <button class="add-link__accept" :class="{ active: !!link }" :disabled="!link" @click="createLink">
+      <input type="text" class="add-link__input" placeholder="Input or paste link..." :onkeypress="enterCheck"
+             v-model="link">
+      <button type="button" class="add-link__accept" :class="{ active: matchURLRegEx() }" :disabled="!matchURLRegEx()"
+              @click="createLink">
         <img src="@/assets/check.svg" alt="">
       </button>
     </div>
@@ -23,6 +25,14 @@ const createLink = async () => {
   await store.dispatch('Links/createLink', link.value)
   emit('close')
 }
+
+const enterCheck = async (e: KeyboardEvent) => {
+  if (e.key === 'Enter') {
+    await createLink()
+  }
+}
+
+const matchURLRegEx = (): RegExpMatchArray | null => (link.value.match(/^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z\d_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?\w+=\w+(&\w+=\w+)*)?\/?$/))
 </script>
 
 <style scoped lang="scss">
