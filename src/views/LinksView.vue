@@ -5,10 +5,10 @@
       {{ links }}
       <div class="links__table table">
         <div class="table__line table__sort">
-          <span>short link</span>
-          <button type="button">short</button>
-          <button type="button">target</button>
-          <button type="button">counter</button>
+          <span>id</span>
+          <button type="button" @click="sort('short')">short</button>
+          <button type="button" @click="sort('target')">target</button>
+          <button type="button" @click="sort('counter')">counter</button>
         </div>
         <div class="table__line" v-for="(link, index) in links" :key="index">
           <span>{{ link.short }}</span>
@@ -38,16 +38,30 @@ const sortBy = ref('short')
 const offset = ref(0)
 const limit = ref(0)
 
-onMounted(async (): Promise<void> => await store.dispatch('Links/getStatistics', {
+const getStatistics = async (): Promise<void> => await store.dispatch('Links/getStatistics', {
   order: `${sortType.value}_${sortBy.value}`,
   offset: offset.value,
   limit: limit.value
-}))
+})
+
+onMounted(async (): Promise<void> => await getStatistics())
 
 const links = computed(() => store.getters['Links/links'])
 
 const makeURLByShort = (short: string): string => `${process.env.VUE_APP_API_URI}/s/${short}`
 const copy = (text: string): Promise<void> => navigator.clipboard.writeText(text)
+
+const toggleSortType = (): string => (sortType.value = sortType.value === 'desc' ? 'asc' : 'desc')
+
+const sort = async (_sortBy: 'short' | 'target' | 'counter'): Promise<void> => {
+  if (_sortBy === sortBy.value) {
+    toggleSortType()
+  } else {
+    sortBy.value = _sortBy
+    sortType.value = 'asc'
+  }
+  return await getStatistics()
+}
 </script>
 
 <style scoped lang="scss">
@@ -72,6 +86,10 @@ const copy = (text: string): Promise<void> => navigator.clipboard.writeText(text
   &__line {
     display: grid;
     grid-template-columns: 120px 1fr 1fr 120px;
+
+    &:first-child {
+      font-weight: 500;
+    }
 
     &:not(:first-child) {
       border-top: 1px solid $grey;
