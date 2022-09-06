@@ -21,26 +21,31 @@ const Auth = {
         commit('setIsAuth', true)
       }
     },
-    async register (_: any, { username, password }: { username: string, password: string }) {
+    async register ({ commit }: any, {
+      username,
+      password
+    }: { username: string, password: string }) {
       try {
-        const res = await register(username, password)
-        if (res.status === 200) {
-          await router.push({ path: Routes.authorization })
-        }
-      } catch (e) {
-        console.log(e)
+        await register(username, password)
+        await router.push({ path: Routes.authorization })
+      } catch (e: any) {
+        commit('setErrors', [e.response.data.detail], { root: true })
       }
     },
     async login ({ commit }: any, payload: { username: string, password: string }) {
       try {
         const res = await login(new URLSearchParams(payload))
-        if (res.status === 200) {
-          commit('setIsAuth', true)
-          localStorage.access_token = res.data.access_token
-          await router.push({ path: Routes.links })
+        commit('setIsAuth', true)
+        localStorage.access_token = res.data.access_token
+        await router.push({ path: Routes.links })
+      } catch (e: any) {
+        switch (e.response.status) {
+          case 400:
+            commit('setErrors', [e.response.data.detail], { root: true })
+            break
+          case 422:
+            commit('setErrors', e.response.data.detail.map((item: any) => `${item.loc[1]}: ${item.msg}`), { root: true })
         }
-      } catch (e) {
-        console.log(e)
       }
     }
   }
