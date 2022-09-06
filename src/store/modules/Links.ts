@@ -22,11 +22,17 @@ const Links = {
         console.log(e)
       }
     },
-    async createLink (_a: any, link: string) {
+    async createLink ({ commit }: any, link: string) {
       try {
         await squeeze(link)
-      } catch (e) {
-        console.log(e)
+      } catch (e: any) {
+        switch (e.response.status) {
+          case 400:
+            commit('setErrors', [e.response.data.detail], { root: true })
+            break
+          case 422:
+            commit('setErrors', e.response.data.detail.map((item: any) => `${item.loc[1]}: ${item.msg}`), { root: true })
+        }
       }
     }
   }
