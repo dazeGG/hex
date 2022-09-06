@@ -42,6 +42,7 @@
           <span class="table__line-counter">{{ link.counter }}</span>
         </div>
       </div>
+      <LinksPaginator :page-size="pageSize" @change-page="changePage"/>
     </div>
   </div>
   <Teleport to="#app">
@@ -53,6 +54,7 @@
 import { onMounted, ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import AddLink from '@/components/AddLink.vue'
+import LinksPaginator from '@/components/LinksPaginator.vue'
 
 const showAddLink = ref(false)
 
@@ -60,18 +62,24 @@ const store = useStore()
 
 const sortType = ref('desc')
 const sortBy = ref('short')
-const offset = ref(0)
-const limit = ref(0)
+
+const pageSize = ref(25)
+const page = ref(1)
 
 const getStatistics = async (): Promise<void> => await store.dispatch('Links/getStatistics', {
   order: `${sortType.value}_${sortBy.value}`,
-  offset: offset.value,
-  limit: limit.value
+  offset: pageSize.value * (page.value - 1),
+  limit: pageSize.value
 })
 
 onMounted(async (): Promise<void> => await getStatistics())
 
 const links = computed(() => store.getters['Links/links'])
+
+const changePage = async (pageNumber: number): Promise<void> => {
+  page.value = pageNumber
+  await getStatistics()
+}
 
 const makeURLByShort = (short: string): string => `${process.env.VUE_APP_API_URI}/s/${short}`
 const copy = (text: string): Promise<void> => navigator.clipboard.writeText(text)

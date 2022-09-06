@@ -3,14 +3,19 @@ import { getStatistics, squeeze } from '@/services/links.service'
 const Links = {
   namespaced: true,
   state: {
-    links: []
+    links: [],
+    linksCount: 0
   },
   getters: {
-    links: (state: any) => state.links
+    links: (state: any) => state.links,
+    linksCount: (state: any) => state.linksCount
   },
   mutations: {
     setLinks (state: any, payload: any) {
       state.links = payload
+    },
+    setLinksCount (state: any, payload: any) {
+      state.linksCount = payload
     }
   },
   actions: {
@@ -18,6 +23,14 @@ const Links = {
       try {
         const res = await getStatistics(order, offset, limit)
         commit('setLinks', res.data)
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    async getLinksCount ({ commit }: any) {
+      try {
+        const res = await getStatistics('asc_short', 0, 0)
+        commit('setLinksCount', res.data.length)
       } catch (e) {
         console.log(e)
       }
