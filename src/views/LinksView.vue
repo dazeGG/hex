@@ -29,7 +29,7 @@
             </svg>
           </button>
         </div>
-        <div class="table__line" v-for="(link, index) in links" :key="index">
+        <div class="table__line" v-for="link in links" :key="link.id">
           <div class="table__line-link">
             <button class="copy" type="button" @click="copy(makeURLByShort(link.short))">Copy</button>
             <a :href="makeURLByShort(link.short)" target="_blank">{{ makeURLByShort(link.short) }}</a>
