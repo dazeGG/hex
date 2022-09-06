@@ -6,9 +6,21 @@
       <div class="links__table table">
         <div class="table__line table__sort">
           <span>id</span>
-          <button type="button" @click="sort('short')">short</button>
-          <button type="button" @click="sort('target')">target</button>
-          <button type="button" @click="sort('counter')">counter</button>
+          <button class="table__sort-button" type="button" @click="sort('short')">
+            <span>short</span>
+            <img class="table__sort-arrow" :class="{ rotated: sortType === 'desc' }" src="@/assets/arrow.svg" alt=""
+                 v-if="sortBy === 'short'">
+          </button>
+          <button class="table__sort-button" type="button" @click="sort('target')">
+            <span>target</span>
+            <img class="table__sort-arrow" :class="{ rotated: sortType === 'desc' }" src="@/assets/arrow.svg" alt=""
+                 v-if="sortBy === 'target'">
+          </button>
+          <button class="table__sort-button" type="button" @click="sort('counter')">
+            <span>counter</span>
+            <img class="table__sort-arrow" :class="{ rotated: sortType === 'desc' }" src="@/assets/arrow.svg" alt=""
+                 v-if="sortBy === 'counter'">
+          </button>
         </div>
         <div class="table__line" v-for="(link, index) in links" :key="index">
           <span>{{ link.short }}</span>
@@ -136,8 +148,24 @@ const sort = async (_sortBy: 'short' | 'target' | 'counter'): Promise<void> => {
   }
 
   &__sort {
-    > button:hover {
-      background-color: $grey;
+    &-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+
+      &:hover {
+        background-color: $grey;
+      }
+    }
+
+    &-arrow {
+      transition: 200ms;
+      transform: rotate(0deg);
+
+      &.rotated {
+        transform: rotate(180deg);
+      }
     }
   }
 }
