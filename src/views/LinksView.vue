@@ -2,35 +2,41 @@
   <div class="links">
     <div class="links__wrapper">
       <h1 class="links__title">Your Links</h1>
-      {{ links }}
       <div class="links__table table">
         <div class="table__line table__sort">
-          <span>id</span>
           <button class="table__sort-button" type="button" @click="sort('short')">
             <span>short</span>
-            <img class="table__sort-arrow" :class="{ rotated: sortType === 'desc' }" src="@/assets/arrow.svg" alt=""
-                 v-if="sortBy === 'short'">
+            <svg class="table__sort-arrow" :class="{ rotated: sortType === 'desc' }" v-if="sortBy === 'short'"
+                 xmlns="http://www.w3.org/2000/svg" width="12" height="8" fill="none">
+              <path stroke="#2c3e50" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="m11 1.5-5 5-5-5"/>
+            </svg>
           </button>
           <button class="table__sort-button" type="button" @click="sort('target')">
             <span>target</span>
-            <img class="table__sort-arrow" :class="{ rotated: sortType === 'desc' }" src="@/assets/arrow.svg" alt=""
-                 v-if="sortBy === 'target'">
+            <svg class="table__sort-arrow" :class="{ rotated: sortType === 'desc' }" v-if="sortBy === 'target'"
+                 xmlns="http://www.w3.org/2000/svg" width="12" height="8" fill="none">
+              <path stroke="#2c3e50" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="m11 1.5-5 5-5-5"/>
+            </svg>
           </button>
           <button class="table__sort-button" type="button" @click="sort('counter')">
             <span>counter</span>
-            <img class="table__sort-arrow" :class="{ rotated: sortType === 'desc' }" src="@/assets/arrow.svg" alt=""
-                 v-if="sortBy === 'counter'">
+            <svg class="table__sort-arrow" :class="{ rotated: sortType === 'desc' }" v-if="sortBy === 'counter'"
+                 xmlns="http://www.w3.org/2000/svg" width="12" height="8" fill="none">
+              <path stroke="#2c3e50" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="m11 1.5-5 5-5-5"/>
+            </svg>
           </button>
         </div>
         <div class="table__line" v-for="(link, index) in links" :key="index">
-          <span>{{ link.short }}</span>
           <div class="table__line-link">
-            <button type="button" @click="copy(makeURLByShort(link.short))">Copy</button>
-            <a :href="makeURLByShort(link.short)" target="_blank">Open</a>
+            <button class="copy" type="button" @click="copy(makeURLByShort(link.short))">Copy</button>
+            <a :href="makeURLByShort(link.short)" target="_blank">{{ makeURLByShort(link.short) }}</a>
           </div>
           <div class="table__line-link">
-            <button type="button" @click="copy(link.target)">Copy</button>
-            <a :href="link.target" target="_blank">Open</a>
+            <button class="copy" type="button" @click="copy(link.target)">Copy</button>
+            <a :href="link.target" target="_blank">{{ link.target }}</a>
           </div>
           <span>{{ link.counter }}</span>
         </div>
@@ -97,7 +103,7 @@ const sort = async (_sortBy: 'short' | 'target' | 'counter'): Promise<void> => {
 
   &__line {
     display: grid;
-    grid-template-columns: 120px 1fr 1fr 120px;
+    grid-template-columns: 300px 1fr 120px;
 
     &:first-child {
       font-weight: 500;
@@ -121,20 +127,22 @@ const sort = async (_sortBy: 'short' | 'target' | 'counter'): Promise<void> => {
 
     &-link {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: auto 1fr;
       text-align: center;
       align-items: center;
       padding: 0;
 
       > * {
         height: 100%;
+        padding-inline: 10px;
 
         &:hover {
           background-color: $grey;
+          color: $white;
         }
       }
 
-      button[type=button] {
+      button.copy {
         border-right: 1px solid $grey;
         color: $blue;
       }
@@ -142,7 +150,8 @@ const sort = async (_sortBy: 'short' | 'target' | 'counter'): Promise<void> => {
       a {
         display: flex;
         align-items: center;
-        justify-content: center;
+        text-align: left;
+        overflow: hidden;
       }
     }
   }
@@ -156,6 +165,11 @@ const sort = async (_sortBy: 'short' | 'target' | 'counter'): Promise<void> => {
 
       &:hover {
         background-color: $grey;
+        color: $white;
+
+        > svg > path {
+          stroke: $white;
+        }
       }
     }
 
