@@ -2,6 +2,7 @@
   <div class="links">
     <div class="links__wrapper">
       <h1 class="links__title">Your Links</h1>
+      <button class="links__create button" @click.prevent="showAddLink = true">Create link</button>
       <div class="links__table table">
         <div class="table__line table__sort">
           <button class="table__sort-button" type="button" @click="sort('short')">
@@ -43,11 +44,17 @@
       </div>
     </div>
   </div>
+  <Teleport to="#app">
+    <AddLink v-if="showAddLink" @close="createLink"/>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
 import { useStore } from 'vuex'
+import AddLink from '@/components/AddLink.vue'
+
+const showAddLink = ref(false)
 
 const store = useStore()
 
@@ -80,6 +87,11 @@ const sort = async (_sortBy: 'short' | 'target' | 'counter'): Promise<void> => {
   }
   return await getStatistics()
 }
+
+const createLink = async () => {
+  showAddLink.value = false
+  return await getStatistics()
+}
 </script>
 
 <style scoped lang="scss">
@@ -89,12 +101,21 @@ const sort = async (_sortBy: 'short' | 'target' | 'counter'): Promise<void> => {
   min-height: 100vh;
   padding-top: 58px;
 
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
   &__title {
     text-align: center;
   }
 
+  &__create {
+    align-self: flex-end;
+  }
+
   &__table {
-    margin-top: 20px;
   }
 }
 

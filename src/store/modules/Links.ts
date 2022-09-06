@@ -1,4 +1,4 @@
-import { getStatistics } from '@/services/links.service'
+import { getStatistics, squeeze } from '@/services/links.service'
 
 const Links = {
   namespaced: true,
@@ -18,6 +18,13 @@ const Links = {
       try {
         const res = await getStatistics(order, offset, limit)
         commit('setLinks', res.data)
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    async createLink (_a: any, link: string) {
+      try {
+        await squeeze(link)
       } catch (e) {
         console.log(e)
       }
