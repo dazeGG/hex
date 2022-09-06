@@ -1,5 +1,5 @@
 <template>
-  <RegAuthForm :mode="Mode.Home"/>
+  <RegAuthForm :mode="Mode.Authorization"/>
 </template>
 
 <script setup lang="ts">
