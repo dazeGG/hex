@@ -46,7 +46,7 @@ const matchURLRegEx = (): RegExpMatchArray | null => (link.value.match(/^((ftp|h
     height: 100vh;
     width: 100vw;
     background-color: transparentize($black, 0.25);
-    backdrop-filter: blur(3px);
+    backdrop-filter: blur(8px);
   }
 
   &__wrapper {
