@@ -1,6 +1,7 @@
 enum Mode {
   Registration,
-  Authorization
+  Authorization,
+  Home
 }
 
 export default Mode
