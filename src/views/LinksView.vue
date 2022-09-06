@@ -156,6 +156,7 @@ const createLink = async () => {
       > * {
         height: 100%;
         padding-inline: 10px;
+        transition: 200ms;
 
         &:hover {
           background-color: $black;
@@ -193,6 +194,7 @@ const createLink = async () => {
       justify-content: center;
       align-items: center;
       gap: 10px;
+      transition: 200ms;
 
       &:hover {
         background-color: $black;
