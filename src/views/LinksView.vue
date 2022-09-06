@@ -6,7 +6,7 @@
         <div class="table__line table__sort">
           <button class="table__sort-button" type="button" @click="sort('short')">
             <span>short</span>
-            <svg class="table__sort-arrow" :class="{ rotated: sortType === 'desc' }" v-if="sortBy === 'short'"
+            <svg class="table__sort-arrow" :class="{ rotated: sortType === 'asc' }" v-if="sortBy === 'short'"
                  xmlns="http://www.w3.org/2000/svg" width="12" height="8" fill="none">
               <path stroke="#2c3e50" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                     d="m11 1.5-5 5-5-5"/>
@@ -14,7 +14,7 @@
           </button>
           <button class="table__sort-button" type="button" @click="sort('target')">
             <span>target</span>
-            <svg class="table__sort-arrow" :class="{ rotated: sortType === 'desc' }" v-if="sortBy === 'target'"
+            <svg class="table__sort-arrow" :class="{ rotated: sortType === 'asc' }" v-if="sortBy === 'target'"
                  xmlns="http://www.w3.org/2000/svg" width="12" height="8" fill="none">
               <path stroke="#2c3e50" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                     d="m11 1.5-5 5-5-5"/>
@@ -22,7 +22,7 @@
           </button>
           <button class="table__sort-button" type="button" @click="sort('counter')">
             <span>counter</span>
-            <svg class="table__sort-arrow" :class="{ rotated: sortType === 'desc' }" v-if="sortBy === 'counter'"
+            <svg class="table__sort-arrow" :class="{ rotated: sortType === 'asc' }" v-if="sortBy === 'counter'"
                  xmlns="http://www.w3.org/2000/svg" width="12" height="8" fill="none">
               <path stroke="#2c3e50" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                     d="m11 1.5-5 5-5-5"/>
@@ -51,7 +51,7 @@ import { useStore } from 'vuex'
 
 const store = useStore()
 
-const sortType = ref('asc')
+const sortType = ref('desc')
 const sortBy = ref('short')
 const offset = ref(0)
 const limit = ref(0)
@@ -76,7 +76,7 @@ const sort = async (_sortBy: 'short' | 'target' | 'counter'): Promise<void> => {
     toggleSortType()
   } else {
     sortBy.value = _sortBy
-    sortType.value = 'asc'
+    sortType.value = 'desc'
   }
   return await getStatistics()
 }
@@ -137,7 +137,7 @@ const sort = async (_sortBy: 'short' | 'target' | 'counter'): Promise<void> => {
         padding-inline: 10px;
 
         &:hover {
-          background-color: $grey;
+          background-color: $black;
           color: $white;
         }
       }
@@ -145,6 +145,10 @@ const sort = async (_sortBy: 'short' | 'target' | 'counter'): Promise<void> => {
       button.copy {
         border-right: 1px solid $grey;
         color: $blue;
+
+        &:hover {
+          color: $white;
+        }
       }
 
       a {
@@ -164,7 +168,7 @@ const sort = async (_sortBy: 'short' | 'target' | 'counter'): Promise<void> => {
       gap: 10px;
 
       &:hover {
-        background-color: $grey;
+        background-color: $black;
         color: $white;
 
         > svg > path {

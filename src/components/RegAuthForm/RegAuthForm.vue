@@ -1,7 +1,17 @@
 <template>
   <div class="authorization">
     <div class="authorization__wrapper">
-      <div class="authorization__info">
+      <div class="authorization__info" v-if="props.mode === Mode.Home">
+        <h1>HomeView</h1>
+        <span>made by dazeGG</span>
+        <p style="margin-top: 20px;">On this site you can shorten links and look at the number of clicks on them</p>
+        <span class="authorization__login-to-start">
+          Sign Up to start
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+          <path fill="#2c3e50" d="m21.9 12-7.5 6.2.6.8 9-7.5L15 4l-.6.8 7.5 6.2H0v1h21.9z"/></svg>
+        </span>
+      </div>
+      <div class="authorization__info" v-else>
         <h1 v-if="props.mode === Mode.Registration">Registration</h1>
         <h1 v-else>Authorization</h1>
         <span>made by dazeGG</span>
@@ -18,7 +28,7 @@
             <input :id="passwordID" type="password" class="input" placeholder="Enter your password" v-model="password">
           </div>
           <button type="submit" class="form__item form__submit button" @click="submit">{{ formText }}</button>
-          <div class="form__register" v-if="props.mode === Mode.Registration">
+          <div class="form__register" v-if="props.mode === Mode.Registration || props.mode === Mode.Home">
             <router-link :to="Routes.authorization">
               <span>Already have an account</span>
             </router-link>
@@ -50,7 +60,7 @@ const props = defineProps({
   }
 })
 
-const formText = props.mode === Mode.Registration ? 'Sign Up' : 'Login'
+const formText = props.mode === Mode.Registration || props.mode === Mode.Home ? 'Sign Up' : 'Login'
 
 const usernameID = uid()
 const passwordID = uid()
@@ -61,10 +71,16 @@ const password = ref('')
 const submit = async () => {
   switch (props.mode) {
     case Mode.Registration:
-      await store.dispatch('Auth/register', { username: username.value, password: password.value })
+      await store.dispatch('Auth/register', {
+        username: username.value,
+        password: password.value
+      })
       break
     case Mode.Authorization:
-      await store.dispatch('Auth/login', { username: username.value, password: password.value })
+      await store.dispatch('Auth/login', {
+        username: username.value,
+        password: password.value
+      })
   }
 }
 </script>
@@ -98,6 +114,15 @@ const submit = async () => {
     > span {
       font-weight: 500;
     }
+  }
+
+  &__login-to-start {
+    margin-top: 20px;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
   }
 
   &__form {
