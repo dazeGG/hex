@@ -5,9 +5,22 @@
       {{ links }}
       <div class="links__table table">
         <div class="table__line table__sort">
+          <span>short link</span>
           <button type="button">short</button>
           <button type="button">target</button>
           <button type="button">counter</button>
+        </div>
+        <div class="table__line" v-for="(link, index) in links" :key="index">
+          <span>{{ link.short }}</span>
+          <div class="table__line-link">
+            <button type="button" @click="copy(makeURLByShort(link.short))">Copy</button>
+            <a :href="makeURLByShort(link.short)" target="_blank">Open</a>
+          </div>
+          <div class="table__line-link">
+            <button type="button" @click="copy(link.target)">Copy</button>
+            <a :href="link.target" target="_blank">Open</a>
+          </div>
+          <span>{{ link.counter }}</span>
         </div>
       </div>
     </div>
@@ -20,19 +33,21 @@ import { useStore } from 'vuex'
 
 const store = useStore()
 
-const order = ref('asc_short')
+const sortType = ref('asc')
+const sortBy = ref('short')
 const offset = ref(0)
 const limit = ref(0)
 
-onMounted(async () => {
-  await store.dispatch('Links/getStatistics', {
-    order: order.value,
-    offset: offset.value,
-    limit: limit.value
-  })
-})
+onMounted(async (): Promise<void> => await store.dispatch('Links/getStatistics', {
+  order: `${sortType.value}_${sortBy.value}`,
+  offset: offset.value,
+  limit: limit.value
+}))
 
 const links = computed(() => store.getters['Links/links'])
+
+const makeURLByShort = (short: string): string => `${process.env.VUE_APP_API_URI}/s/${short}`
+const copy = (text: string): Promise<void> => navigator.clipboard.writeText(text)
 </script>
 
 <style scoped lang="scss">
@@ -56,20 +71,55 @@ const links = computed(() => store.getters['Links/links'])
 
   &__line {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 120px 1fr 1fr 120px;
 
-    > *:not(:first-child) {
-      border-left: 1px solid $grey;
+    &:not(:first-child) {
+      border-top: 1px solid $grey;
+    }
+
+    > span {
+      text-align: center;
+    }
+
+    > * {
+      padding: 10px;
+
+      &:not(:first-child) {
+        border-left: 1px solid $grey;
+      }
+    }
+
+    &-link {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      text-align: center;
+      align-items: center;
+      padding: 0;
+
+      > * {
+        height: 100%;
+
+        &:hover {
+          background-color: $grey;
+        }
+      }
+
+      button[type=button] {
+        border-right: 1px solid $grey;
+        color: $blue;
+      }
+
+      a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
     }
   }
 
   &__sort {
-    > button {
-      padding-block: 10px;
-
-      &:hover {
-        background-color: $grey;
-      }
+    > button:hover {
+      background-color: $grey;
     }
   }
 }
