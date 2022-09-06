@@ -39,7 +39,7 @@
             <button class="copy" type="button" @click="copy(link.target)">Copy</button>
             <a :href="link.target" target="_blank">{{ link.target }}</a>
           </div>
-          <span>{{ link.counter }}</span>
+          <span class="table__line-counter">{{ link.counter }}</span>
         </div>
       </div>
     </div>
@@ -178,6 +178,12 @@ const createLink = async () => {
         text-align: left;
         overflow: hidden;
       }
+    }
+
+    &-counter {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 
